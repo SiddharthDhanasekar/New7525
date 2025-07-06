@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, redirect, url_for
-from run import socketio
 
 main_bp = Blueprint('main', __name__)
 
@@ -11,13 +10,11 @@ def home():
     # return render_template('index.html')
     return redirect(url_for('teacher.teacher_home'))
 
+# If you want to add SocketIO events here later, use a lazy import inside the function, e.g.:
 
 # @socketio.on('join-admin-room')
 # def handle_join_admin_room():
-#     """
-#     When an admin‐client joins the 'admin-room' (via SocketIO),
-#     add them to that room so we can emit passcode/reset events.
-#     """
+#     from run import socketio  # import inside the function to avoid circular imports
 #     from flask_socketio import join_room
 #     join_room('admin-room')
 #     print("Admin joined admin-room")
