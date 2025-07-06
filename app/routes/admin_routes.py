@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify, render_template, session, redirect, url_for
-from run import socketio
 
 # Imports from your existing services
 from app.services.auth.login import handle_admin_login
