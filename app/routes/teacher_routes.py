@@ -58,6 +58,7 @@ def teacher_login():
 
     return redirect(url_for('teacher.teacher_home'))
 
+
 @teacher_bp.route('/validations-content')
 def validations_content():
     """
