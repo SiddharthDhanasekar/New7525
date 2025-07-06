@@ -7,7 +7,6 @@ from flask import (
     redirect, url_for, session, current_app
 )
 from werkzeug.utils import secure_filename
-from run import socketio
 
 # Service‐layer imports
 from app.services.auth.login import handle_teacher_login
@@ -119,10 +118,8 @@ def upload_assignments():
 
 @teacher_bp.route('/match_assignments', methods=['POST'])
 def handle_match_assignments():
-    """
-    Given a list of timestamps  attempt to match
-    assignment files (timestamp in filename) , then run workingScore().
-    """
+    from run import socketio   # lazy import here, inside the function to avoid circular import
+
     data = request.get_json()
     timestamp = data.get('timestamp')
     print(f"Received timestamp: {timestamp}")
@@ -161,6 +158,7 @@ def handle_match_assignments():
         'received_timestamp': timestamp,
         'data': matchdata_serializable
     })
+
 
 
 @teacher_bp.route('/teacher-logout')
