@@ -1,7 +1,7 @@
 from flask import request
 from app.services.db.mysql import db_connection
 from app.services.teacher.business import saveLog
-import hashlib
+from werkzeug.security import check_password_hash
 
 def handle_teacher_login():
     """
@@ -29,15 +29,13 @@ def handle_teacher_login():
             if not teacher:
                 return {'error': 'Invalid credentials'}, 401
 
-
             teacher_id = teacher[0]
             stored_password_hash = teacher[1]
-            input_password_hash = hashlib.sha256(code.encode()).hexdigest()
 
-            # Check passcode
-           
-            if input_password_hash != stored_password_hash:
+            # Use Werkzeug to check password
+            if not check_password_hash(stored_password_hash, code):
                 return {'error': 'Incorrect passcode'}, 401
+
             saveLog(email, "login")
 
             return {
@@ -53,6 +51,7 @@ def handle_teacher_login():
     finally:
         if conn:
             conn.close()
+
 
 def handle_admin_login():
     """
