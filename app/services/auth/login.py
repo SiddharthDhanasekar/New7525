@@ -17,12 +17,14 @@ def handle_teacher_login():
     conn = None
     try:
         conn = db_connection()
+        print(f"Debug: Querying for teacher with email: {email}")
         with conn.cursor() as cursor:
             cursor.execute(
                 "SELECT id, password_hash FROM teachers WHERE email=%s",
                 (email,)
             )
             teacher = cursor.fetchone()
+            print(f"Debug: DB returned teacher record: {teacher}")
 
             if not teacher:
                 print("Debug: No teacher found with email")
@@ -38,6 +40,7 @@ def handle_teacher_login():
                 return {'error': 'Incorrect passcode'}, 401
 
             print("Debug: Password check succeeded")
+            print(f"Debug: Calling saveLog for {email}")
             saveLog(email, "login")
 
             return {
@@ -53,6 +56,7 @@ def handle_teacher_login():
     finally:
         if conn:
             conn.close()
+
 
 
 def handle_admin_login():
